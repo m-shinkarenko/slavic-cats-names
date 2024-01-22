@@ -1,0 +1,12 @@
+FROM golang:1.21-bookworm as builder
+
+WORKDIR /app
+COPY . .
+RUN go build -o client ./cmd/client/main.go
+
+
+FROM debian:bookworm
+
+COPY --from=builder ./app/client client
+
+ENTRYPOINT /client
